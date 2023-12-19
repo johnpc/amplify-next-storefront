@@ -3,6 +3,7 @@ import { runWithAmplifyServerContext } from "@/utils/amplifyServerUtils";
 import { NextApiRequest, NextApiResponse } from "next";
 import { generateServerClientUsingReqRes } from "@aws-amplify/adapter-nextjs/api";
 import config from "@/amplifyconfiguration.json";
+import { Schema } from "@/amplify/data/resource";
 
 export default async function GET(
   request: NextApiRequest,
@@ -13,7 +14,7 @@ export default async function GET(
     operation: async (contextSpec) => {
       const session = await fetchAuthSession(contextSpec);
       try {
-        const client = generateServerClientUsingReqRes({
+        const client = generateServerClientUsingReqRes<Schema>({
           config: config,
           authMode: "userPool",
           authToken: session.tokens?.accessToken.toString()!,

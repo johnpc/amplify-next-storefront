@@ -1,7 +1,12 @@
-import { fetchAuthSession, getCurrentUser } from "aws-amplify/auth/server";
+import {
+  fetchAuthSession,
+  fetchUserAttributes,
+  getCurrentUser,
+} from "aws-amplify/auth/server";
 import { runWithAmplifyServerContext } from "@/utils/amplifyServerUtils";
 import { NextApiRequest, NextApiResponse } from "next";
 import { AuthUser } from "aws-amplify/auth";
+import { getOrCreateProfile } from "@/utils/getOrCreateProfile";
 type Data = {
   user?: AuthUser;
   session?: any; // AuthSession, <- not exported?
@@ -17,7 +22,9 @@ export default async function GET(
       try {
         const user = await getCurrentUser(contextSpec);
         const session = await fetchAuthSession(contextSpec);
-        return { session, user };
+        const userAttributes = await fetchUserAttributes(contextSpec);
+        const profile = await getOrCreateProfile(contextSpec);
+        return { session, user, userAttributes, profile };
       } catch (error) {
         console.log(error);
         response.status(400).json({ error: (error as Error).message });

@@ -1,57 +1,71 @@
 import { useState, useEffect } from "react";
 import { generateClient } from "aws-amplify/data";
 import { Schema } from "@/amplify/data/resource";
-import { signOut } from "aws-amplify/auth";
 import { useRouter } from "next/navigation";
+import {
+  FetchUserAttributesOutput,
+  fetchUserAttributes,
+} from "aws-amplify/auth";
+import Link from "next/link";
 
 const client = generateClient<Schema>();
 
 export default function HomePage() {
   const router = useRouter();
+  const [products, setProducts] = useState<Schema["Product"][]>([]);
+  const [orders, setOrders] = useState<Schema["Order"][]>([]);
+  const [userAttributes, setUserAttributes] =
+    useState<FetchUserAttributesOutput>();
+  async function listProducts() {
+    const { data } = await client.models.Product.list({
+      // This authMode allows all Product records
+      // to be returned, not only those that you own
+      authMode: "apiKey",
+    });
+    setProducts(data ?? []);
+  }
+  async function listOrders() {
+    const { data } = await client.models.Order.list();
+    setOrders(data ?? []);
+  }
 
-  const logOut = async () => {
-    await signOut();
-    router.push("/sign-in");
-  };
-  const [todos, setTodos] = useState<Schema["Todo"][]>([]);
-  async function listTodos() {
-    const response = await fetch("/api/todos/list");
-    const jsonResponse = await response.json();
-    const { data } = jsonResponse;
-    setTodos(data ?? []);
+  async function getUser() {
+    const userAttributes = await fetchUserAttributes();
+    setUserAttributes(userAttributes);
   }
 
   useEffect(() => {
-    listTodos();
-    const sub = client.models.Todo.observeQuery().subscribe(({ items }) =>
-      setTodos([...items])
-    );
+    listProducts();
+    listOrders();
+    getUser();
+    const sub = client.models.Product.observeQuery({
+      authMode: "apiKey",
+    }).subscribe(({ items }) => setProducts([...items]));
 
     return () => sub.unsubscribe();
   }, []);
 
   return (
     <main>
-      <h1>Hello, Amplify 👋</h1>
-      <button onClick={() => logOut()}>Sign out</button>
-      <button
-        onClick={async () => {
-          // create a new Todo with the following attributes
-          const { errors, data: newTodo } = await client.models.Todo.create({
-            // prompt the user to enter the title
-            content: window.prompt("title"),
-            done: false,
-            priority: "medium",
-          });
-          console.log(errors, newTodo);
-        }}
-      >
-        Create{" "}
+      <h1>Hello, {userAttributes?.email} 👋</h1>
+      <button onClick={() => router.push("/profile")}>Edit Profile</button>
+      <button onClick={() => router.push("/product/new")}>
+        Create Product{" "}
       </button>
 
       <ul>
-        {todos.map((todo) => (
-          <li key={todo.id}>{todo.content}</li>
+        {products.map((product) => (
+          <li key={product.id}>
+            <Link href={`/product/${product.id}`}>
+              {product.title}: ${(product.priceInCents / 100).toFixed(2)}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <hr />
+      <ul>
+        {orders.map((order) => (
+          <li key={order.id}>{order.id}</li>
         ))}
       </ul>
     </main>
