@@ -63,14 +63,11 @@ export default function ProfilePage() {
           },
         },
       }).result;
-      console.log("Key from Response: ", result.key);
-
       const url = await getUrl({
         key: result.key,
       });
       setAvatarUrl(url.url.href);
       setAvatarKey(result.key);
-      console.log({ result, success: true, url });
     } catch (error) {
       console.log("Error : ", error);
     }

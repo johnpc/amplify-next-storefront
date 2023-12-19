@@ -55,8 +55,6 @@ export default function NewProductPage() {
           },
         },
       }).result;
-      console.log("Key from Response: ", result.key);
-
       const url = await getUrl({
         key: result.key,
       });
