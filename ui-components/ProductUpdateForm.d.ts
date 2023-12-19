@@ -17,7 +17,7 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (
   value: T,
-  validationResponse: ValidationResponse
+  validationResponse: ValidationResponse,
 ) => ValidationResponse | Promise<ValidationResponse>;
 export declare type ProductUpdateFormInputValues = {
   title?: string;
@@ -50,19 +50,19 @@ export declare type ProductUpdateFormProps = React.PropsWithChildren<
     id?: string;
     product?: Product;
     onSubmit?: (
-      fields: ProductUpdateFormInputValues
+      fields: ProductUpdateFormInputValues,
     ) => ProductUpdateFormInputValues;
     onSuccess?: (fields: ProductUpdateFormInputValues) => void;
     onError?: (
       fields: ProductUpdateFormInputValues,
-      errorMessage: string
+      errorMessage: string,
     ) => void;
     onChange?: (
-      fields: ProductUpdateFormInputValues
+      fields: ProductUpdateFormInputValues,
     ) => ProductUpdateFormInputValues;
     onValidate?: ProductUpdateFormValidationValues;
   } & React.CSSProperties
 >;
 export default function ProductUpdateForm(
-  props: ProductUpdateFormProps
+  props: ProductUpdateFormProps,
 ): React.ReactElement;

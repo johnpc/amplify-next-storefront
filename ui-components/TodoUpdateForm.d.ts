@@ -22,7 +22,7 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (
   value: T,
-  validationResponse: ValidationResponse
+  validationResponse: ValidationResponse,
 ) => ValidationResponse | Promise<ValidationResponse>;
 export declare type TodoUpdateFormInputValues = {
   content?: string;
@@ -59,5 +59,5 @@ export declare type TodoUpdateFormProps = React.PropsWithChildren<
   } & React.CSSProperties
 >;
 export default function TodoUpdateForm(
-  props: TodoUpdateFormProps
+  props: TodoUpdateFormProps,
 ): React.ReactElement;

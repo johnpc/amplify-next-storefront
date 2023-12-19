@@ -7,7 +7,7 @@ import { Schema } from "@/amplify/data/resource";
 
 export default async function GET(
   request: NextApiRequest,
-  response: NextApiResponse<Schema["Todo"][] | { error: string }>
+  response: NextApiResponse<Schema["Todo"][] | { error: string }>,
 ) {
   const data = await runWithAmplifyServerContext({
     nextServerContext: { request, response },

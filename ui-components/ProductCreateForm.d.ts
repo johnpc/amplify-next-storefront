@@ -16,7 +16,7 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (
   value: T,
-  validationResponse: ValidationResponse
+  validationResponse: ValidationResponse,
 ) => ValidationResponse | Promise<ValidationResponse>;
 export declare type ProductCreateFormInputValues = {
   title?: string;
@@ -48,19 +48,19 @@ export declare type ProductCreateFormProps = React.PropsWithChildren<
   } & {
     clearOnSuccess?: boolean;
     onSubmit?: (
-      fields: ProductCreateFormInputValues
+      fields: ProductCreateFormInputValues,
     ) => ProductCreateFormInputValues;
     onSuccess?: (fields: ProductCreateFormInputValues) => void;
     onError?: (
       fields: ProductCreateFormInputValues,
-      errorMessage: string
+      errorMessage: string,
     ) => void;
     onChange?: (
-      fields: ProductCreateFormInputValues
+      fields: ProductCreateFormInputValues,
     ) => ProductCreateFormInputValues;
     onValidate?: ProductCreateFormValidationValues;
   } & React.CSSProperties
 >;
 export default function ProductCreateForm(
-  props: ProductCreateFormProps
+  props: ProductCreateFormProps,
 ): React.ReactElement;

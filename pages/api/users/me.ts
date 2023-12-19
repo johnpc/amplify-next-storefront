@@ -15,7 +15,7 @@ type Data = {
 
 export default async function GET(
   request: NextApiRequest,
-  response: NextApiResponse<Data>
+  response: NextApiResponse<Data>,
 ) {
   const amplifyAuthData = await runWithAmplifyServerContext({
     nextServerContext: { request, response },

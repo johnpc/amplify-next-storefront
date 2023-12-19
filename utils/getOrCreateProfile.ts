@@ -9,7 +9,7 @@ import {
 import { AmplifyServer } from "aws-amplify/adapter-core";
 
 export const getOrCreateProfile = async (
-  contextSpec: AmplifyServer.ContextSpec
+  contextSpec: AmplifyServer.ContextSpec,
 ): Promise<Schema["Profile"]> => {
   const session = await fetchAuthSession(contextSpec);
   const user = await getCurrentUser(contextSpec);

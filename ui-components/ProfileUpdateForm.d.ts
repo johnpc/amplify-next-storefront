@@ -17,7 +17,7 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (
   value: T,
-  validationResponse: ValidationResponse
+  validationResponse: ValidationResponse,
 ) => ValidationResponse | Promise<ValidationResponse>;
 export declare type ProfileUpdateFormInputValues = {
   userId?: string;
@@ -68,19 +68,19 @@ export declare type ProfileUpdateFormProps = React.PropsWithChildren<
     id?: string;
     profile?: Profile;
     onSubmit?: (
-      fields: ProfileUpdateFormInputValues
+      fields: ProfileUpdateFormInputValues,
     ) => ProfileUpdateFormInputValues;
     onSuccess?: (fields: ProfileUpdateFormInputValues) => void;
     onError?: (
       fields: ProfileUpdateFormInputValues,
-      errorMessage: string
+      errorMessage: string,
     ) => void;
     onChange?: (
-      fields: ProfileUpdateFormInputValues
+      fields: ProfileUpdateFormInputValues,
     ) => ProfileUpdateFormInputValues;
     onValidate?: ProfileUpdateFormValidationValues;
   } & React.CSSProperties
 >;
 export default function ProfileUpdateForm(
-  props: ProfileUpdateFormProps
+  props: ProfileUpdateFormProps,
 ): React.ReactElement;

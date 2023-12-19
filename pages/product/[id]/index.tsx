@@ -17,12 +17,12 @@ export default function ProductDetailPage() {
         {
           id: router.query.id as string,
         },
-        { authMode: "apiKey" }
+        { authMode: "apiKey" },
       );
       setProduct(data);
       const sellerProfileResponse = await client.models.Profile.get(
         { id: data.owner! },
-        { authMode: "apiKey" }
+        { authMode: "apiKey" },
       );
       setSeller(sellerProfileResponse.data!);
     };

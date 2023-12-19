@@ -16,7 +16,7 @@ export declare type ValidationResponse = {
 };
 export declare type ValidationFunction<T> = (
   value: T,
-  validationResponse: ValidationResponse
+  validationResponse: ValidationResponse,
 ) => ValidationResponse | Promise<ValidationResponse>;
 export declare type ProfileCreateFormInputValues = {
   userId?: string;
@@ -66,19 +66,19 @@ export declare type ProfileCreateFormProps = React.PropsWithChildren<
   } & {
     clearOnSuccess?: boolean;
     onSubmit?: (
-      fields: ProfileCreateFormInputValues
+      fields: ProfileCreateFormInputValues,
     ) => ProfileCreateFormInputValues;
     onSuccess?: (fields: ProfileCreateFormInputValues) => void;
     onError?: (
       fields: ProfileCreateFormInputValues,
-      errorMessage: string
+      errorMessage: string,
     ) => void;
     onChange?: (
-      fields: ProfileCreateFormInputValues
+      fields: ProfileCreateFormInputValues,
     ) => ProfileCreateFormInputValues;
     onValidate?: ProfileCreateFormValidationValues;
   } & React.CSSProperties
 >;
 export default function ProfileCreateForm(
-  props: ProfileCreateFormProps
+  props: ProfileCreateFormProps,
 ): React.ReactElement;

@@ -7,7 +7,7 @@ import config from "@/amplifyconfiguration.json";
 
 export default async function handler(
   request: NextApiRequest,
-  response: NextApiResponse<Schema["Order"] | { error: string }>
+  response: NextApiResponse<Schema["Order"] | { error: string }>,
 ) {
   const { stripeId, profile, product } = JSON.parse(request.body) as {
     stripeId: string;
@@ -30,7 +30,7 @@ export default async function handler(
         const sellerProfileResponse = await client.models.Profile.get(
           contextSpec,
           { id: product.owner! },
-          { authMode: "apiKey" }
+          { authMode: "apiKey" },
         );
         const seller = sellerProfileResponse.data!;
 
@@ -47,7 +47,7 @@ export default async function handler(
             id: seller.id,
             balanceInCents: seller.balanceInCents + product.priceInCents,
           },
-          { authMode: "apiKey" }
+          { authMode: "apiKey" },
         );
 
         return createdOrder.data;

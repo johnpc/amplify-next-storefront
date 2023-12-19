@@ -23,13 +23,13 @@ export default function ProductPurchasePage() {
 
   const stripeInit = async () => {
     stripe.current = await loadStripe(
-      process.env.NEXT_PUBLIC_STRIPE_PK_KEY || ""
+      process.env.NEXT_PUBLIC_STRIPE_PK_KEY || "",
     );
     const { data } = await client.models.Product.get(
       {
         id: router.query.id as string,
       },
-      { authMode: "apiKey" }
+      { authMode: "apiKey" },
     );
     const response = await fetch("/api/stripe", {
       method: "POST",
@@ -68,7 +68,7 @@ export default function ProductPurchasePage() {
         {
           id: router.query.id as string,
         },
-        { authMode: "apiKey" }
+        { authMode: "apiKey" },
       );
       setProduct(data);
     };
@@ -90,7 +90,7 @@ export default function ProductPurchasePage() {
       clientSecret.current,
       {
         payment_method: { card: card.current! },
-      }
+      },
     );
 
     if (result.error) {
