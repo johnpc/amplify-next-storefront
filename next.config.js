@@ -27,6 +27,13 @@ const nextConfig = {
         port: "",
         pathname: "/public/*",
       },
+      {
+        protocol: "https",
+        hostname:
+          "amplify-d2lgoq62e7b8fm-main-branch--bucket83908e77-zvho4kifp9xe.s3.us-west-2.amazonaws.com",
+        port: "",
+        pathname: "/public/*",
+      },
     ],
   },
 };
