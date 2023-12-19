@@ -1,13 +1,25 @@
 // amplify/backend.ts
 import * as s3 from "aws-cdk-lib/aws-s3";
-import { defineBackend } from "@aws-amplify/backend";
+import { defineBackend, defineFunction } from "@aws-amplify/backend";
 import { auth } from "./auth/resource.js";
 import { data } from "./data/resource.js";
+import { Function } from "aws-cdk-lib/aws-lambda";
 
-const backend = defineBackend({
-  auth,
-  data,
+const authFunction = defineFunction({
+  entry: "./data/custom-authorizer.ts",
 });
+const backend = defineBackend({
+  authFunction,
+  auth,
+  data: data(authFunction),
+});
+
+const underlyingAuthLambda = backend.resources.authFunction.resources
+  .lambda as Function;
+underlyingAuthLambda.addEnvironment(
+  "ADMIN_API_KEY",
+  process.env.ADMIN_API_KEY!,
+);
 
 /**
  * THIS HACK IS NEEDED UNTIL THIS PR IS RELEASED: https://github.com/aws-amplify/amplify-backend/pull/808

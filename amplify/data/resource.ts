@@ -5,6 +5,7 @@ import {
   defineData,
   defineFunction,
 } from "@aws-amplify/backend";
+import { Function } from "aws-cdk-lib/aws-lambda";
 
 const schema = a.schema({
   Todo: a
@@ -57,19 +58,18 @@ const schema = a.schema({
 
 export type Schema = ClientSchema<typeof schema>;
 
-export const data = defineData({
-  schema,
-  authorizationModes: {
-    defaultAuthorizationMode: "userPool",
-    // API Key is used for a.allow.public() rules
-    apiKeyAuthorizationMode: {
-      expiresInDays: 30,
+export const data = (authFunction: any) =>
+  defineData({
+    schema,
+    authorizationModes: {
+      defaultAuthorizationMode: "userPool",
+      // API Key is used for a.allow.public() rules
+      apiKeyAuthorizationMode: {
+        expiresInDays: 30,
+      },
+      lambdaAuthorizationMode: {
+        function: authFunction,
+        timeToLiveInSeconds: 300,
+      },
     },
-    lambdaAuthorizationMode: {
-      function: defineFunction({
-        entry: "./custom-authorizer.ts",
-      }),
-      timeToLiveInSeconds: 300,
-    },
-  },
-});
+  });

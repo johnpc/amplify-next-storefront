@@ -12,7 +12,7 @@ export const handler: AppSyncAuthorizerHandler<ResolverContext> = async (
   console.log(`EVENT: ${JSON.stringify(event)}`);
   const { authorizationToken } = event;
   const response = {
-    isAuthorized: authorizationToken === "custom-authorized",
+    isAuthorized: authorizationToken === process.env.ADMIN_API_KEY,
     resolverContext: {
       userid: "user-id",
       info: "contextual information A",

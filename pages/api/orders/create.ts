@@ -48,7 +48,7 @@ export default async function handler(
             balanceInCents: seller.balanceInCents + product.priceInCents,
           },
           // This authMode/authToken allows admin rights to update profiles
-          { authMode: "lambda", authToken: "custom-authorized" },
+          { authMode: "lambda", authToken: process.env.ADMIN_API_KEY },
         );
 
         return createdOrder.data;

@@ -5,6 +5,7 @@ const nextConfig = {
     NEXT_PUBLIC_STRIPE_PK_KEY: process.env.NEXT_PUBLIC_STRIPE_PK_KEY,
     STRIPE_SK_KEY: process.env.STRIPE_SK_KEY,
     IS_DEVELOPMENT: process.env.IS_DEVELOPMENT,
+    ADMIN_API_KEY: process.env.ADMIN_API_KEY,
   },
   images: {
     remotePatterns: [

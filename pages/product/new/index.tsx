@@ -38,7 +38,6 @@ export default function NewProductPage() {
       />
       <hr />
       <input type="file" onChange={uploadProductImage} />
-      <h1>Hello!</h1>
       <ProductCreateForm
         overrides={{
           owner: {
