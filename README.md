@@ -40,7 +40,6 @@ cp .env.example .env
 
 Then add your Stripe API keys to the .env file. For production (https://dashboard.stripe.com/apikeys) or test mode (https://dashboard.stripe.com/test/apikeys)
 
-
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

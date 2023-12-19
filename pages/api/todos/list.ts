@@ -7,7 +7,7 @@ import { Schema } from "@/amplify/data/resource";
 
 export default async function GET(
   request: NextApiRequest,
-  response: NextApiResponse<any>
+  response: NextApiResponse<Schema["Todo"][] | { error: string }>
 ) {
   const data = await runWithAmplifyServerContext({
     nextServerContext: { request, response },
@@ -18,9 +18,9 @@ export default async function GET(
           config: config,
           authMode: "userPool",
           authToken: session.tokens?.accessToken.toString()!,
-        }) as any;
+        });
         const { data } = await client.models.Todo.list(contextSpec);
-        return { data };
+        return data;
       } catch (error) {
         console.log(error);
         response.status(400).json({ error: (error as Error).message });

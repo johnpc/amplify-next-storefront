@@ -7,7 +7,7 @@ import config from "@/amplifyconfiguration.json";
 
 export default async function handler(
   request: NextApiRequest,
-  response: NextApiResponse<any>
+  response: NextApiResponse<Schema["Order"] | { error: string }>
 ) {
   const { stripeId, profile, product } = JSON.parse(request.body) as {
     stripeId: string;
@@ -50,7 +50,7 @@ export default async function handler(
           { authMode: "apiKey" }
         );
 
-        return createdOrder;
+        return createdOrder.data;
       } catch (error) {
         console.log(error);
         response.status(400).json({ error: (error as Error).message });

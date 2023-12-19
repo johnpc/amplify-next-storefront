@@ -12,6 +12,7 @@ type Data = {
   session?: any; // AuthSession, <- not exported?
   error?: string;
 };
+
 export default async function GET(
   request: NextApiRequest,
   response: NextApiResponse<Data>

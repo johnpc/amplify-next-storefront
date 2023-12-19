@@ -5,7 +5,9 @@ import { runWithAmplifyServerContext } from "@/utils/amplifyServerUtils";
 
 export default async function handler(
   request: NextApiRequest,
-  response: NextApiResponse<any>
+  response: NextApiResponse<
+    Stripe.Response<Stripe.PaymentIntent> | { error: string }
+  >
 ) {
   const body = JSON.parse(request.body) as { amount: string };
   const stripeData = await runWithAmplifyServerContext({
