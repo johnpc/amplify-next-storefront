@@ -10,7 +10,7 @@ Amplify.configure(
   {
     ...config,
     aws_user_files_s3_bucket: process.env.IS_DEVELOPMENT
-      ? "amplify-nextamplifygen2-xss-sandbox-bucket83908e77-rhqm4ujul7rl"
+      ? "amplify-amplizon-xss-sandbox-edf1a8-bucket83908e77-ew8bziwdsenv"
       : "amplify-d2lgoq62e7b8fm-main-branch--bucket83908e77-zvho4kifp9xe",
     aws_user_files_s3_bucket_region: "us-west-2",
   } as unknown as LegacyConfig,

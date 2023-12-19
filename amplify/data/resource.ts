@@ -1,5 +1,10 @@
 // amplify/data/resource.ts
-import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
+import {
+  type ClientSchema,
+  a,
+  defineData,
+  defineFunction,
+} from "@aws-amplify/backend";
 
 /*== STEP 1 ===============================================================
 The section below creates a Todo database table with a "content" field. Try
@@ -32,7 +37,11 @@ const schema = a.schema({
       country: a.string().required(),
       products: a.hasMany("Product"),
     })
-    .authorization([a.allow.owner(), a.allow.public().to(["read", "update"])]),
+    .authorization([
+      a.allow.owner(),
+      a.allow.custom(),
+      a.allow.public().to(["read"]),
+    ]),
   Product: a
     .model({
       id: a.id().required(),
@@ -62,6 +71,14 @@ export const data = defineData({
     // API Key is used for a.allow.public() rules
     apiKeyAuthorizationMode: {
       expiresInDays: 30,
+    },
+    lambdaAuthorizationMode: {
+      function: defineFunction({
+        entry: "./custom-authorizer.ts",
+      }),
+      // (Optional) STEP 3
+      // Configure the token's time to live
+      timeToLiveInSeconds: 300,
     },
   },
 });

@@ -47,7 +47,7 @@ export default async function handler(
             id: seller.id,
             balanceInCents: seller.balanceInCents + product.priceInCents,
           },
-          { authMode: "apiKey" },
+          { authMode: "lambda", authToken: "custom-authorized" },
         );
 
         return createdOrder.data;

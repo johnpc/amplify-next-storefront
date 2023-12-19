@@ -22,3 +22,22 @@ bucket.grantReadWrite(authRole);
 // allow any guest (unauthenticated) user to read from the bucket
 const unauthRole = backend.resources.auth.resources.unauthenticatedUserIamRole;
 bucket.grantRead(unauthRole);
+
+bucket.addCorsRule({
+  allowedHeaders: ["*"],
+  allowedMethods: [
+    s3.HttpMethods.GET,
+    s3.HttpMethods.HEAD,
+    s3.HttpMethods.PUT,
+    s3.HttpMethods.POST,
+    s3.HttpMethods.DELETE,
+  ],
+  allowedOrigins: ["*"],
+  exposedHeaders: [
+    "x-amz-server-side-encryption",
+    "x-amz-request-id",
+    "x-amz-id-2",
+    "ETag",
+  ],
+  maxAge: 3000,
+});
