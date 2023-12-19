@@ -3,9 +3,11 @@ import ProfileUpdateForm from "@/ui-components/ProfileUpdateForm";
 import { signOut } from "aws-amplify/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
+import { getUrl, uploadData } from "aws-amplify/storage";
 
 export default function ProfilePage() {
+  const [avatarUrl, setAvatarUrl] = useState<string>();
   const [profile, setProfile] = useState<Schema["Profile"]>();
   const router = useRouter();
 
@@ -20,6 +22,7 @@ export default function ProfilePage() {
       const jsonResponse = await response.json();
       const { profile } = jsonResponse;
       setProfile(profile);
+      setAvatarUrl(profile.avatarUrl);
     };
     fetchProfile();
   }, []);
@@ -28,16 +31,52 @@ export default function ProfilePage() {
     return <>Loading...</>;
   }
 
+  const uploadImage = async (event: FormEvent) => {
+    const filename = `${profile.id}-avatar`;
+    const file = await (
+      event.target as HTMLInputElement
+    ).files![0].arrayBuffer();
+
+    try {
+      const result = await uploadData({
+        key: filename,
+        data: file,
+
+        options: {
+          onProgress: ({ transferredBytes, totalBytes }) => {
+            if (totalBytes) {
+              console.log(
+                `Upload progress ${
+                  Math.round(transferredBytes / totalBytes) * 100
+                } %`,
+              );
+            }
+          },
+        },
+      }).result;
+      console.log("Key from Response: ", result.key);
+
+      const url = await getUrl({
+        key: result.key,
+      });
+      setAvatarUrl(url.url.href);
+      console.log({ result, success: true, url });
+    } catch (error) {
+      console.log("Error : ", error);
+    }
+  };
+
   return (
     <>
-      <Image
-        alt={profile.name!}
-        width={200}
-        height={200}
-        src={profile.avatarUrl!}
-      />
+      <Image alt={profile.name!} width={200} height={200} src={avatarUrl!} />
+      <hr />
+      <input type="file" onChange={uploadImage} />
       <ProfileUpdateForm
         profile={profile}
+        onSubmit={(fields) => ({
+          ...fields,
+          avatarUrl: avatarUrl,
+        })}
         overrides={{
           userId: {
             disabled: true,
@@ -50,6 +89,10 @@ export default function ProfilePage() {
           },
           email: {
             disabled: true,
+          },
+          avatarUrl: {
+            disabled: true,
+            value: avatarUrl,
           },
         }}
       />

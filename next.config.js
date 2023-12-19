@@ -20,6 +20,13 @@ const nextConfig = {
         pathname:
           "/storage/v1/object/public/arbor-eats-app-files/missing-avatar.png",
       },
+      {
+        protocol: "https",
+        hostname:
+          "amplify-nextamplifygen2-xss-sandbox-bucket83908e77-rhqm4ujul7rl.s3.us-west-2.amazonaws.com",
+        port: "",
+        pathname: "/public/*",
+      },
     ],
   },
 };
