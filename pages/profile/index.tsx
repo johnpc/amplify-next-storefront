@@ -4,7 +4,8 @@ import { signOut } from "aws-amplify/auth";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { FormEvent, useEffect, useState } from "react";
-import { getUrl, uploadData } from "aws-amplify/storage";
+import { getUrl } from "aws-amplify/storage";
+import { uploadImage } from "@/utils/uploadImage";
 
 export default function ProfilePage() {
   const [avatarUrl, setAvatarUrl] = useState<string>();
@@ -40,44 +41,17 @@ export default function ProfilePage() {
     return <>Loading...</>;
   }
 
-  const uploadImage = async (event: FormEvent) => {
-    const filename = `${profile.id}-avatar`;
-    const file = await (
-      event.target as HTMLInputElement
-    ).files![0].arrayBuffer();
-
-    try {
-      const result = await uploadData({
-        key: filename,
-        data: file,
-
-        options: {
-          onProgress: ({ transferredBytes, totalBytes }) => {
-            if (totalBytes) {
-              console.log(
-                `Upload progress ${
-                  Math.round(transferredBytes / totalBytes) * 100
-                } %`,
-              );
-            }
-          },
-        },
-      }).result;
-      const url = await getUrl({
-        key: result.key,
-      });
-      setAvatarUrl(url.url.href);
-      setAvatarKey(result.key);
-    } catch (error) {
-      console.log("Error : ", error);
-    }
+  const uploadProfileImage = async (event: FormEvent) => {
+    const { key, href } = await uploadImage(event);
+    setAvatarUrl(href);
+    setAvatarKey(key);
   };
 
   return (
     <>
       <Image alt={profile.name!} width={200} height={200} src={avatarUrl!} />
       <hr />
-      <input type="file" onChange={uploadImage} />
+      <input type="file" onChange={uploadProfileImage} />
       <ProfileUpdateForm
         profile={profile}
         onSubmit={(fields) => ({
