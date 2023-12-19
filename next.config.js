@@ -24,15 +24,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname:
-          "amplify-amplizon-xss-sandbox-edf1a8-bucket83908e77-ew8bziwdsenv.s3.us-west-2.amazonaws.com",
-        port: "",
-        pathname: "/public/*",
-      },
-      {
-        protocol: "https",
-        hostname:
-          "amplify-d2lgoq62e7b8fm-main-branch--bucket83908e77-zvho4kifp9xe.s3.us-west-2.amazonaws.com",
+        hostname: "*.s3.us-west-2.amazonaws.com",
         port: "",
         pathname: "/public/*",
       },

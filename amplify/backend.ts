@@ -3,6 +3,7 @@ import * as s3 from "aws-cdk-lib/aws-s3";
 import { defineBackend, defineFunction } from "@aws-amplify/backend";
 import { auth } from "./auth/resource.js";
 import { data } from "./data/resource.js";
+import { storage } from "./storage/resource.js";
 import { Function } from "aws-cdk-lib/aws-lambda";
 
 const authFunction = defineFunction({
@@ -12,6 +13,7 @@ const backend = defineBackend({
   authFunction,
   auth,
   data: data(authFunction),
+  storage,
 });
 
 const underlyingAuthLambda = backend.resources.authFunction.resources
@@ -23,6 +25,8 @@ underlyingAuthLambda.addEnvironment(
 
 /**
  * THIS HACK IS NEEDED UNTIL THIS PR IS RELEASED: https://github.com/aws-amplify/amplify-backend/pull/808
+ *
+ * Then we can replace with overrides with `const bucket = backend.resources.storage.resources.bucket`
  */
 
 // create the bucket and its stack
