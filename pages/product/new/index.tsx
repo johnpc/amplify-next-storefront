@@ -6,6 +6,7 @@ import { getUrl, uploadData } from "aws-amplify/storage";
 import Image from "next/image";
 
 export default function NewProductPage() {
+  const [imageKey, setImageKey] = useState<string>();
   const [imageUrl, setImageUrl] = useState<string>();
   const [profile, setProfile] = useState<Schema["Profile"]>();
   useEffect(() => {
@@ -60,6 +61,7 @@ export default function NewProductPage() {
         key: result.key,
       });
       setImageUrl(url.url.href);
+      setImageKey(result.key);
     } catch (error) {
       console.log("Error : ", error);
     }
@@ -85,14 +87,14 @@ export default function NewProductPage() {
           },
           imageUrl: {
             disabled: true,
-            value: imageUrl,
+            value: imageKey,
           },
         }}
         onSubmit={(fields) => ({
           ...fields,
           owner: profile.id,
           profileProductsId: profile.id,
-          imageUrl,
+          imageUrl: imageKey,
         })}
       />
       <button onClick={() => router.push("/")}>Home</button>

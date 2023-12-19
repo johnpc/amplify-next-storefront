@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { generateClient } from "aws-amplify/api";
 import Image from "next/image";
+import { getUrl } from "aws-amplify/storage";
 const client = generateClient<Schema>();
 
 export default function ProductDetailPage() {
@@ -11,6 +12,7 @@ export default function ProductDetailPage() {
   const navigationRouter = useNavigationRouter();
   const [product, setProduct] = useState<Schema["Product"]>();
   const [seller, setSeller] = useState<Schema["Profile"]>();
+  const [imageUrl, setImageUrl] = useState<string>();
   useEffect(() => {
     const fetchProduct = async () => {
       const { data } = await client.models.Product.get(
@@ -25,7 +27,12 @@ export default function ProductDetailPage() {
         { authMode: "apiKey" },
       );
       setSeller(sellerProfileResponse.data!);
+      const url = await getUrl({
+        key: data.imageUrl!,
+      });
+      setImageUrl(url.url.href);
     };
+
     fetchProduct();
   }, []);
   if (!product) {
@@ -35,12 +42,11 @@ export default function ProductDetailPage() {
   return (
     <main>
       <h1>{product.title}</h1>
-      <Image
-        alt={product.title}
-        src={product.imageUrl!}
-        width={200}
-        height={300}
-      />
+      {imageUrl ? (
+        <Image alt={product.title} src={imageUrl} width={200} height={300} />
+      ) : (
+        ""
+      )}
       <p>{product.description}</p>
       <p>${(product.priceInCents / 100).toFixed(2)}</p>
       <p>Sold by: {seller?.name}</p>

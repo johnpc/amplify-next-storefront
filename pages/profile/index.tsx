@@ -8,6 +8,7 @@ import { getUrl, uploadData } from "aws-amplify/storage";
 
 export default function ProfilePage() {
   const [avatarUrl, setAvatarUrl] = useState<string>();
+  const [avatarKey, setAvatarKey] = useState<string>();
   const [profile, setProfile] = useState<Schema["Profile"]>();
   const router = useRouter();
 
@@ -22,7 +23,15 @@ export default function ProfilePage() {
       const jsonResponse = await response.json();
       const { profile } = jsonResponse;
       setProfile(profile);
-      setAvatarUrl(profile.avatarUrl);
+      if (profile.avatarUrl.startsWith("http")) {
+        setAvatarUrl(profile.avatarUrl);
+      } else {
+        setAvatarKey(profile.avatarUrl);
+        const url = await getUrl({
+          key: profile.avatarUrl,
+        });
+        setAvatarUrl(url.url.href);
+      }
     };
     fetchProfile();
   }, []);
@@ -60,6 +69,7 @@ export default function ProfilePage() {
         key: result.key,
       });
       setAvatarUrl(url.url.href);
+      setAvatarKey(result.key);
       console.log({ result, success: true, url });
     } catch (error) {
       console.log("Error : ", error);
@@ -75,7 +85,7 @@ export default function ProfilePage() {
         profile={profile}
         onSubmit={(fields) => ({
           ...fields,
-          avatarUrl: avatarUrl,
+          avatarUrl: avatarKey,
         })}
         overrides={{
           userId: {
@@ -92,7 +102,7 @@ export default function ProfilePage() {
           },
           avatarUrl: {
             disabled: true,
-            value: avatarUrl,
+            value: avatarKey,
           },
         }}
       />
