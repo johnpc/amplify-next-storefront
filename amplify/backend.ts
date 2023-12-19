@@ -9,6 +9,10 @@ const backend = defineBackend({
   data,
 });
 
+/**
+ * THIS HACK IS NEEDED UNTIL THIS PR IS RELEASED: https://github.com/aws-amplify/amplify-backend/pull/808
+ */
+
 // create the bucket and its stack
 const bucketStack = backend.createStack("BucketStack");
 const bucket = new s3.Bucket(bucketStack, "Bucket", {
