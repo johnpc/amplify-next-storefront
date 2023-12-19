@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  env: {
+    NEXT_PUBLIC_STRIPE_PK_KEY: process.env.NEXT_PUBLIC_STRIPE_PK_KEY,
+    STRIPE_SK_KEY: process.env.STRIPE_SK_KEY,
+  },
   images: {
     remotePatterns: [
       {
