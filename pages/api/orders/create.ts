@@ -30,9 +30,16 @@ export default async function handler(
         const sellerProfileResponse = await client.models.Profile.get(
           contextSpec,
           { id: product.owner! },
-          { authMode: "iam" },
+          { authMode: "lambda", authToken: process.env.ADMIN_API_KEY },
         );
         const seller = sellerProfileResponse.data!;
+
+        if (sellerProfileResponse.errors) {
+          console.log({
+            message: "error fetching seller profile",
+            errors: sellerProfileResponse.errors,
+          });
+        }
 
         const createdOrder = await client.models.Order.create(contextSpec, {
           stripeId,
@@ -41,15 +48,19 @@ export default async function handler(
           orderBuyerProfileId: profile.id,
         });
 
-        await client.models.Profile.update(
+        const response = await client.models.Profile.update(
           contextSpec,
           {
             id: seller.id,
-            balanceInCents: seller.balanceInCents + product.priceInCents,
+            balanceInCents: (seller.balanceInCents ?? 0) + product.priceInCents,
           },
           // This authMode/authToken allows admin rights to update profiles
           { authMode: "lambda", authToken: process.env.ADMIN_API_KEY },
         );
+
+        if (response.errors) {
+          console.log({ errors: response.errors });
+        }
 
         return createdOrder.data;
       } catch (error) {

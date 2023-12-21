@@ -24,7 +24,7 @@ export default function ProfilePage() {
       const jsonResponse = await response.json();
       const { profile } = jsonResponse;
       setProfile(profile);
-      if (profile.avatarUrl.startsWith("http")) {
+      if (profile.avatarUrl?.startsWith("http")) {
         setAvatarUrl(profile.avatarUrl);
       } else {
         setAvatarKey(profile.avatarUrl);

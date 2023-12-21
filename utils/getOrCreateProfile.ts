@@ -30,24 +30,40 @@ export const getOrCreateProfile = async (
   }
 
   if (existingProfile?.data?.id) {
+    console.log({ message: "returning existing profile", existingProfile });
     return existingProfile.data;
   }
-  console.log("creating new profile record");
-  const createdProfile = await client.models.Profile.create(contextSpec, {
-    id: user.userId,
-    userId: user.userId,
-    email: userAttributes.email!,
-    avatarUrl:
-      "https://fdocizdzprkfeigbnlxy.supabase.co/storage/v1/object/public/arbor-eats-app-files/missing-avatar.png",
-    balanceInCents: 0,
-    name: userAttributes.name ?? userAttributes.email ?? user.username,
-    address: "",
-    zipcode: "",
-    city: "",
-    state: "",
-    country: "",
-    owner: user.userId,
-  });
 
-  return createdProfile.data;
+  try {
+    console.log({ message: "creating new profile record" });
+    const createdProfile = await client.models.Profile.create(
+      contextSpec,
+      {
+        id: user.userId,
+        userId: user.userId,
+        email: userAttributes.email!,
+        avatarUrl:
+          "https://fdocizdzprkfeigbnlxy.supabase.co/storage/v1/object/public/arbor-eats-app-files/missing-avatar.png",
+        name: userAttributes.name ?? userAttributes.email ?? user.username,
+        address: "",
+        zipcode: "",
+        city: "",
+        state: "",
+        country: "",
+        owner: user.userId,
+      },
+      { authMode: "lambda", authToken: process.env.ADMIN_API_KEY },
+    );
+    console.log({
+      message: "created new profile record",
+      createdProfile,
+      error: createdProfile.errors,
+    });
+
+    return createdProfile.data;
+  } catch (e) {
+    console.log(e);
+    console.log({ message: (e as any).message });
+    throw e;
+  }
 };

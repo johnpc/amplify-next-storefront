@@ -8,7 +8,10 @@ const schema = a.schema({
       userId: a.string().required(),
       email: a.string().required(),
       avatarUrl: a.string(),
-      balanceInCents: a.integer().required(),
+      balanceInCents: a
+        .integer()
+        .authorization([a.allow.custom(), a.allow.owner().to(["read"])])
+        .default(0),
       name: a.string(),
       address: a.string().required(),
       zipcode: a.string().required(),
