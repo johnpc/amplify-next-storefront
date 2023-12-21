@@ -22,7 +22,6 @@ export default function HomePage() {
       // to be returned, not only those that you own
       authMode: "userPool",
     });
-    console.log({ response });
     setProducts(response.data ?? []);
   }
   async function listOrders() {
@@ -46,7 +45,6 @@ export default function HomePage() {
     return () => sub.unsubscribe();
   }, []);
 
-  console.log({ products, orders });
   return (
     <main>
       <h1>Hello, {userAttributes?.email} 👋</h1>
