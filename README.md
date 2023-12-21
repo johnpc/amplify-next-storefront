@@ -6,7 +6,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 - Learn about using the Amplify Data category, including:
   - **relationships:** A seller's "Profile" has many "Products" for example
-  - **permissions:** An "Order" belongs to both a "Buyer" and a "Seller". "Profile" editing is private to the logged in user, but publicly readable. Updating a seller's "balance" after a sale uses custom/admin permissions)
+  - **permissions:** An "Order" belongs to both a "Buyer" and a "Seller". "Profile" editing is private to the logged in user, but publicly readable. Updating a seller's "balance" after a sale uses custom/admin permissions). A seller's account balance can only be updated by the admin, and only read by the owner.
 - Learn about using the Amplify Storage category, including:
   - Uploading to an S3 bucket for User Profile Avatars and Product images
   - Downloading from S3 bucket using public presigned urls
