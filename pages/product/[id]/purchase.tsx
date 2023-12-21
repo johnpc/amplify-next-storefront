@@ -29,7 +29,7 @@ export default function ProductPurchasePage() {
       {
         id: router.query.id as string,
       },
-      { authMode: "apiKey" },
+      { authMode: "iam" },
     );
     const response = await fetch("/api/stripe", {
       method: "POST",
@@ -68,7 +68,7 @@ export default function ProductPurchasePage() {
         {
           id: router.query.id as string,
         },
-        { authMode: "apiKey" },
+        { authMode: "iam" },
       );
       setProduct(data);
     };

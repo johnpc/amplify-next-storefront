@@ -2,6 +2,26 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app) and [`npm create amplify`]. It is intended to be instructional on how to use Amplify Gen2 with NextJS. It implements an online store where users can post new products for sale or purchase existing products.
 
+## Features
+
+- Learn about using the Amplify Data category, including:
+  - **relationships:** A seller's "Profile" has many "Products" for example
+  - **permissions:** An "Order" belongs to both a "Buyer" and a "Seller". "Profile" editing is private to the logged in user, but publicly readable. Updating a seller's "balance" after a sale uses custom/admin permissions)
+- Learn about using the Amplify Storage category, including:
+  - Uploading to an S3 bucket for User Profile Avatars and Product images
+  - Downloading from S3 bucket using public presigned urls
+- Learn about using the Amplify Auth category, including:
+  - Sign up with confirmation email
+  - Sign in with permissions to see only resources allowed by data category settings
+- Learn about Amplify UI Builder codegen
+  - Automatically generate form React component to Create product
+  - Automatically generate form React component to Edit profile, with overrides for non-editable fields
+- Learn about NextJS integration, including
+  - Hosting publicly via Amplify Hosting, with CI/CD deployment on `git push`
+  - NextJS pages and api routes gated by authentication/authorization from Amplify Auth category settings
+  - Api routes including integrations with 3rd party services, in this case Stripe API for payments
+  - Environment variables and secrets (such as Stripe API key)
+
 ## Getting Started
 
 In two terminal tabs:

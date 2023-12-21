@@ -30,7 +30,7 @@ export default async function handler(
         const sellerProfileResponse = await client.models.Profile.get(
           contextSpec,
           { id: product.owner! },
-          { authMode: "apiKey" },
+          { authMode: "iam" },
         );
         const seller = sellerProfileResponse.data!;
 

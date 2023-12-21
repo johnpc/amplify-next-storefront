@@ -17,12 +17,13 @@ export default function HomePage() {
   const [userAttributes, setUserAttributes] =
     useState<FetchUserAttributesOutput>();
   async function listProducts() {
-    const { data } = await client.models.Product.list({
+    const response = await client.models.Product.list({
       // This authMode allows all Product records
       // to be returned, not only those that you own
-      authMode: "apiKey",
+      authMode: "userPool",
     });
-    setProducts(data ?? []);
+    console.log({ response });
+    setProducts(response.data ?? []);
   }
   async function listOrders() {
     const { data } = await client.models.Order.list();
@@ -39,12 +40,13 @@ export default function HomePage() {
     listOrders();
     getUser();
     const sub = client.models.Product.observeQuery({
-      authMode: "apiKey",
+      authMode: "userPool",
     }).subscribe(({ items }) => setProducts([...items]));
 
     return () => sub.unsubscribe();
   }, []);
 
+  console.log({ products, orders });
   return (
     <main>
       <h1>Hello, {userAttributes?.email} 👋</h1>
@@ -54,20 +56,17 @@ export default function HomePage() {
       </button>
 
       <ul>
-        {products.map((product) => (
-          <li key={product.id}>
-            <Link href={`/product/${product.id}`}>
-              {product.title}: ${(product.priceInCents / 100).toFixed(2)}
-            </Link>
-          </li>
-        ))}
+        {products.map &&
+          products.map((product) => (
+            <li key={product.id}>
+              <Link href={`/product/${product.id}`}>
+                {product.title}: ${(product.priceInCents / 100).toFixed(2)}
+              </Link>
+            </li>
+          ))}
       </ul>
       <hr />
-      <ul>
-        {orders.map((order) => (
-          <li key={order.id}>{order.id}</li>
-        ))}
-      </ul>
+      <ul>{orders?.map((order) => <li key={order.id}>{order.id}</li>)}</ul>
     </main>
   );
 }

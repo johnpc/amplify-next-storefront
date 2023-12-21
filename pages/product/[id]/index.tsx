@@ -19,12 +19,12 @@ export default function ProductDetailPage() {
         {
           id: router.query.id as string,
         },
-        { authMode: "apiKey" },
+        { authMode: "iam" },
       );
       setProduct(data);
       const sellerProfileResponse = await client.models.Profile.get(
         { id: data.owner! },
-        { authMode: "apiKey" },
+        { authMode: "iam" },
       );
       setSeller(sellerProfileResponse.data!);
       const url = await getUrl({

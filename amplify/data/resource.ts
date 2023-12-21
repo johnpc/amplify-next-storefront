@@ -1,20 +1,7 @@
 // amplify/data/resource.ts
-import {
-  type ClientSchema,
-  a,
-  defineData,
-  defineFunction,
-} from "@aws-amplify/backend";
-import { Function } from "aws-cdk-lib/aws-lambda";
+import { type ClientSchema, a, defineData } from "@aws-amplify/backend";
 
 const schema = a.schema({
-  Todo: a
-    .model({
-      content: a.string(),
-      done: a.boolean(),
-      priority: a.enum(["low", "medium", "high"]),
-    })
-    .authorization([a.allow.owner(), a.allow.public().to(["read"])]),
   Profile: a
     .model({
       id: a.id().required(),
@@ -34,7 +21,7 @@ const schema = a.schema({
     .authorization([
       a.allow.owner(),
       a.allow.custom(),
-      a.allow.public().to(["read"]),
+      a.allow.public("iam").to(["read"]),
     ]),
   Product: a
     .model({
@@ -45,7 +32,12 @@ const schema = a.schema({
       priceInCents: a.integer().required(),
       imageUrl: a.string(),
     })
-    .authorization([a.allow.owner(), a.allow.public().to(["read"])]),
+    .authorization([
+      a.allow.owner(),
+      a.allow.public("iam").to(["read"]),
+      a.allow.public().to(["read"]),
+      a.allow.private().to(["read"]),
+    ]),
   Order: a
     .model({
       id: a.id().required(),
@@ -53,7 +45,10 @@ const schema = a.schema({
       sellerProfile: a.hasOne("Profile"),
       stripeId: a.string().required(),
     })
-    .authorization([a.allow.multipleOwners(), a.allow.public().to(["read"])]),
+    .authorization([
+      a.allow.multipleOwners(),
+      a.allow.public("iam").to(["read"]),
+    ]),
 });
 
 export type Schema = ClientSchema<typeof schema>;
@@ -67,6 +62,7 @@ export const data = (authFunction: any) =>
       apiKeyAuthorizationMode: {
         expiresInDays: 30,
       },
+      allowListedRoleNames: [],
       lambdaAuthorizationMode: {
         function: authFunction,
         timeToLiveInSeconds: 300,
