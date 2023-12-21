@@ -21,6 +21,7 @@ const schema = a.schema({
     .authorization([
       a.allow.owner(),
       a.allow.custom(),
+      a.allow.private().to(["read"]),
       a.allow.public("iam").to(["read"]),
     ]),
   Product: a
