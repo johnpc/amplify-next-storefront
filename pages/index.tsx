@@ -6,7 +6,7 @@ import {
   FetchUserAttributesOutput,
   fetchUserAttributes,
 } from "aws-amplify/auth";
-import Link from "next/link";
+import ProductCard from "@/components/product-card";
 
 const client = generateClient<Schema>();
 
@@ -52,17 +52,12 @@ export default function HomePage() {
       <button onClick={() => router.push("/product/new")}>
         Create Product{" "}
       </button>
-
-      <ul>
-        {products.map &&
-          products.map((product) => (
-            <li key={product.id}>
-              <Link href={`/product/${product.id}`}>
-                {product.title}: ${(product.priceInCents / 100).toFixed(2)}
-              </Link>
-            </li>
-          ))}
-      </ul>
+      {/* <ul> */}
+      {products.map &&
+        products.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      {/* </ul> */}
       <hr />
       <ul>{orders?.map((order) => <li key={order.id}>{order.id}</li>)}</ul>
     </main>
