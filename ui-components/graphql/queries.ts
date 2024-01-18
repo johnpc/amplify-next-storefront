@@ -8,7 +8,7 @@ export const getProduct = /* GraphQL */ `
       createdAt
       description
       id
-      imageUrl
+      imageKey
       owner
       priceInCents
       profileProductsId
@@ -93,7 +93,7 @@ export const listProducts = /* GraphQL */ `
         createdAt
         description
         id
-        imageUrl
+        imageKey
         owner
         priceInCents
         profileProductsId

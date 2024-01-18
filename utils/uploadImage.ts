@@ -10,12 +10,10 @@ function uuidv4() {
   );
 }
 
-export const uploadImage = async (
-  event: FormEvent,
+export const uploadImageBuffer = async (
+  file: ArrayBuffer,
 ): Promise<{ key: string; href: string }> => {
   const filename = `${uuidv4()}-image`;
-  const file = await (event.target as HTMLInputElement).files![0].arrayBuffer();
-
   try {
     const result = await uploadData({
       key: filename,
@@ -48,4 +46,11 @@ export const uploadImage = async (
       key: "",
     };
   }
+};
+
+export const uploadImage = async (
+  event: FormEvent,
+): Promise<{ key: string; href: string }> => {
+  const file = await (event.target as HTMLInputElement).files![0].arrayBuffer();
+  return await uploadImageBuffer(file);
 };

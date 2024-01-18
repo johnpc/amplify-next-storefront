@@ -16,32 +16,20 @@ const backend = defineBackend({
   storage,
 });
 
-const underlyingAuthLambda = backend.resources.authFunction.resources
-  .lambda as Function;
+const underlyingAuthLambda = backend.authFunction.resources.lambda as Function;
 underlyingAuthLambda.addEnvironment(
   "ADMIN_API_KEY",
   process.env.ADMIN_API_KEY!,
 );
 
-/**
- * THIS HACK IS NEEDED UNTIL THIS PR IS RELEASED: https://github.com/aws-amplify/amplify-backend/pull/808
- *
- * Then we can replace with overrides with `const bucket = backend.resources.storage.resources.bucket`
- */
-
-// create the bucket and its stack
-const bucketStack = backend.createStack("BucketStack");
-const bucket = new s3.Bucket(bucketStack, "Bucket", {
-  blockPublicAccess: s3.BlockPublicAccess.BLOCK_ALL,
-});
-
+const bucket = backend.storage.resources.bucket as s3.Bucket;
 // allow any authenticated user to read and write to the bucket
-const authRole = backend.resources.auth.resources.authenticatedUserIamRole;
+const authRole = backend.auth.resources.authenticatedUserIamRole;
 bucket.grantReadWrite(authRole);
 
 // allow any guest (unauthenticated) user to read from the bucket
-const unauthRole = backend.resources.auth.resources.unauthenticatedUserIamRole;
-bucket.grantRead(unauthRole);
+const unauthRole = backend.auth.resources.unauthenticatedUserIamRole;
+bucket.grantReadWrite(unauthRole);
 
 bucket.addCorsRule({
   allowedHeaders: ["*"],

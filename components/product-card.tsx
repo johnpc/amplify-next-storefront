@@ -17,13 +17,13 @@ export default function ProductCard({
 }: {
   product: Schema["Product"];
 }) {
-  const [imageUrl, setImageUrl] = useState<string>();
+  const [imageKey, setimageKey] = useState<string>();
   useEffect(() => {
     const fetchUrl = async () => {
       const url = await getUrl({
-        key: product.imageUrl!,
+        key: product.imageKey!,
       });
-      setImageUrl(url.url.href);
+      setimageKey(url.url.href);
     };
 
     fetchUrl();
@@ -31,7 +31,7 @@ export default function ProductCard({
   return (
     <Card variation="elevated">
       <Flex alignItems="flex-start">
-        <Image src={imageUrl} alt="Amplify" width="8rem" />
+        <Image src={imageKey} alt="Amplify" width="8rem" />
         <Flex direction="column" gap="xs">
           <Flex>
             <Badge variation="success">New</Badge>

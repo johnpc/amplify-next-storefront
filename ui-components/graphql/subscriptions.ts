@@ -11,7 +11,7 @@ export const onCreateProduct = /* GraphQL */ `
       createdAt
       description
       id
-      imageUrl
+      imageKey
       owner
       priceInCents
       profileProductsId
@@ -92,7 +92,7 @@ export const onDeleteProduct = /* GraphQL */ `
       createdAt
       description
       id
-      imageUrl
+      imageKey
       owner
       priceInCents
       profileProductsId
@@ -173,7 +173,7 @@ export const onUpdateProduct = /* GraphQL */ `
       createdAt
       description
       id
-      imageUrl
+      imageKey
       owner
       priceInCents
       profileProductsId

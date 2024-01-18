@@ -23,7 +23,7 @@ export default function ProductUpdateForm(props) {
     title: "",
     description: "",
     priceInCents: "",
-    imageUrl: "",
+    imageKey: "",
     owner: "",
   };
   const [title, setTitle] = React.useState(initialValues.title);
@@ -33,7 +33,7 @@ export default function ProductUpdateForm(props) {
   const [priceInCents, setPriceInCents] = React.useState(
     initialValues.priceInCents,
   );
-  const [imageUrl, setImageUrl] = React.useState(initialValues.imageUrl);
+  const [imageKey, setimageKey] = React.useState(initialValues.imageKey);
   const [owner, setOwner] = React.useState(initialValues.owner);
   const [errors, setErrors] = React.useState({});
   const resetStateValues = () => {
@@ -43,7 +43,7 @@ export default function ProductUpdateForm(props) {
     setTitle(cleanValues.title);
     setDescription(cleanValues.description);
     setPriceInCents(cleanValues.priceInCents);
-    setImageUrl(cleanValues.imageUrl);
+    setimageKey(cleanValues.imageKey);
     setOwner(cleanValues.owner);
     setErrors({});
   };
@@ -67,7 +67,7 @@ export default function ProductUpdateForm(props) {
     title: [{ type: "Required" }],
     description: [{ type: "Required" }],
     priceInCents: [{ type: "Required" }],
-    imageUrl: [],
+    imageKey: [],
     owner: [],
   };
   const runValidationTasks = async (
@@ -99,7 +99,7 @@ export default function ProductUpdateForm(props) {
           title,
           description,
           priceInCents,
-          imageUrl: imageUrl ?? null,
+          imageKey: imageKey ?? null,
           owner: owner ?? null,
         };
         const validationResponses = await Promise.all(
@@ -164,7 +164,7 @@ export default function ProductUpdateForm(props) {
               title: value,
               description,
               priceInCents,
-              imageUrl,
+              imageKey,
               owner,
             };
             const result = onChange(modelFields);
@@ -192,7 +192,7 @@ export default function ProductUpdateForm(props) {
               title,
               description: value,
               priceInCents,
-              imageUrl,
+              imageKey,
               owner,
             };
             const result = onChange(modelFields);
@@ -224,7 +224,7 @@ export default function ProductUpdateForm(props) {
               title,
               description,
               priceInCents: value,
-              imageUrl,
+              imageKey,
               owner,
             };
             const result = onChange(modelFields);
@@ -244,7 +244,7 @@ export default function ProductUpdateForm(props) {
         label="Image url"
         isRequired={false}
         isReadOnly={false}
-        value={imageUrl}
+        value={imageKey}
         onChange={(e) => {
           let { value } = e.target;
           if (onChange) {
@@ -252,21 +252,21 @@ export default function ProductUpdateForm(props) {
               title,
               description,
               priceInCents,
-              imageUrl: value,
+              imageKey: value,
               owner,
             };
             const result = onChange(modelFields);
-            value = result?.imageUrl ?? value;
+            value = result?.imageKey ?? value;
           }
-          if (errors.imageUrl?.hasError) {
-            runValidationTasks("imageUrl", value);
+          if (errors.imageKey?.hasError) {
+            runValidationTasks("imageKey", value);
           }
-          setImageUrl(value);
+          setimageKey(value);
         }}
-        onBlur={() => runValidationTasks("imageUrl", imageUrl)}
-        errorMessage={errors.imageUrl?.errorMessage}
-        hasError={errors.imageUrl?.hasError}
-        {...getOverrideProps(overrides, "imageUrl")}
+        onBlur={() => runValidationTasks("imageKey", imageKey)}
+        errorMessage={errors.imageKey?.errorMessage}
+        hasError={errors.imageKey?.hasError}
+        {...getOverrideProps(overrides, "imageKey")}
       ></TextField>
       <TextField
         label="Owner"
@@ -280,7 +280,7 @@ export default function ProductUpdateForm(props) {
               title,
               description,
               priceInCents,
-              imageUrl,
+              imageKey,
               owner: value,
             };
             const result = onChange(modelFields);

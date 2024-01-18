@@ -7,7 +7,7 @@ import { uploadImage } from "@/utils/uploadImage";
 
 export default function NewProductPage() {
   const [imageKey, setImageKey] = useState<string>();
-  const [imageUrl, setImageUrl] = useState<string>();
+  const [imageHref, setimageHref] = useState<string>();
   const [profile, setProfile] = useState<Schema["Profile"]>();
   useEffect(() => {
     const fetchProfile = async () => {
@@ -25,7 +25,7 @@ export default function NewProductPage() {
 
   const uploadProductImage = async (event: FormEvent) => {
     const { key, href } = await uploadImage(event);
-    setImageUrl(href);
+    setimageHref(href);
     setImageKey(key);
   };
   return (
@@ -34,7 +34,7 @@ export default function NewProductPage() {
         alt={profile.name!}
         width={200}
         height={200}
-        src={imageUrl || "https://picsum.photos/200/300?random=1"}
+        src={imageHref || "https://picsum.photos/200/300?random=1"}
       />
       <hr />
       <input type="file" onChange={uploadProductImage} />
@@ -46,7 +46,7 @@ export default function NewProductPage() {
             isRequired: true,
             isReadOnly: true,
           },
-          imageUrl: {
+          imageKey: {
             disabled: true,
             value: imageKey,
           },
@@ -55,7 +55,7 @@ export default function NewProductPage() {
           ...fields,
           owner: profile.id,
           profileProductsId: profile.id,
-          imageUrl: imageKey,
+          imageKey: imageKey,
         })}
       />
       <button onClick={() => router.push("/")}>Home</button>

@@ -25,32 +25,32 @@ const schema = a.schema({
       a.allow.owner(),
       a.allow.custom(),
       a.allow.private().to(["read"]),
+      a.allow.private("iam").to(["read"]),
       a.allow.public("iam").to(["read"]),
     ]),
   Product: a
     .model({
-      id: a.id().required(),
       seller: a.belongsTo("Profile"),
       title: a.string().required(),
       description: a.string().required(),
       priceInCents: a.integer().required(),
-      imageUrl: a.string(),
+      imageKey: a.string(),
     })
     .authorization([
       a.allow.owner(),
-      a.allow.public("iam").to(["read"]),
-      a.allow.public().to(["read"]),
       a.allow.private().to(["read"]),
+      a.allow.public("iam").to(["read"]),
+      a.allow.private("iam").to(["read"]),
     ]),
   Order: a
     .model({
-      id: a.id().required(),
       buyerProfile: a.hasOne("Profile"),
       sellerProfile: a.hasOne("Profile"),
       stripeId: a.string().required(),
     })
     .authorization([
       a.allow.multipleOwners(),
+      a.allow.private("iam").to(["read"]),
       a.allow.public("iam").to(["read"]),
     ]),
 });
@@ -61,11 +61,7 @@ export const data = (authFunction: any) =>
   defineData({
     schema,
     authorizationModes: {
-      defaultAuthorizationMode: "userPool",
-      // API Key is used for a.allow.public() rules
-      apiKeyAuthorizationMode: {
-        expiresInDays: 30,
-      },
+      defaultAuthorizationMode: "iam",
       allowListedRoleNames: [],
       lambdaAuthorizationMode: {
         function: authFunction,
